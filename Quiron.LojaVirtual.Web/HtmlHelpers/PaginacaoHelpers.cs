@@ -8,13 +8,13 @@ using System.Web.Mvc;
 
 namespace Quiron.LojaVirtual.Web.HtmlHelpers
 {
-   public static class  PaginacaoHelpers
+   public static class PaginacaoHelpers
    {
       public static MvcHtmlString PageLinks(this HtmlHelper html, Paginacao paginacao, Func<int, string> paginaUrl)
       {
          var resultado = new StringBuilder();
 
-         for(int i = 1; i < paginacao.TotalPaginas; i++)
+         for (int i = 1; i < paginacao.TotalPaginas; i++)
          {
             var tag = new TagBuilder("a");
             tag.MergeAttribute("href", paginaUrl(i));

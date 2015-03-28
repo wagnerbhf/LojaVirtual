@@ -5,22 +5,22 @@ using Quiron.LojaVirtual.Dominio.Repositorio;
 
 namespace Quiron.LojaVirtual.Web.Controllers
 {
-    public class CategoriaController : Controller
-    {
-        private ProdutosRepositorio _repositorio;
+   public class CategoriaController : Controller
+   {
+      private ProdutosRepositorio _repositorio;
 
-        public PartialViewResult Menu(string categoria = null)
-        {
-            ViewBag.CategoriaSelecionada = categoria;
+      public PartialViewResult Menu(string categoria = null)
+      {
+         ViewBag.CategoriaSelecionada = categoria;
 
-            _repositorio = new ProdutosRepositorio();
+         _repositorio = new ProdutosRepositorio();
 
-            IEnumerable<string> categorias = _repositorio.Produtos
-                .Select(c => c.Categoria)
-                .Distinct()
-                .OrderBy(c => c);
-           
-           return PartialView(categorias);
-        }
-    }
+         IEnumerable<string> categorias = _repositorio.Produtos
+             .Select(c => c.Categoria)
+             .Distinct()
+             .OrderBy(c => c);
+
+         return PartialView(categorias);
+      }
+   }
 }
