@@ -28,6 +28,7 @@
          <div class="form-group">
             <label>@(property.DisplayName ?? property.PropertyName)</label>
             @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.NomeCliente)
          </div>
       }
    }
