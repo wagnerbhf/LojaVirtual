@@ -31,10 +31,17 @@ namespace Quiron.LojaVirtual.Web.Areas.Administrativo.Controllers
       }
 
       [HttpPost]
-      public ActionResult Alterar(Produto produto)
+      public ActionResult Alterar(Produto produto, HttpPostedFileBase imagem = null)
       {
          if (ModelState.IsValid)
          {
+            if (imagem != null)
+            {
+               produto.ImagemMimeType = imagem.ContentType;
+               produto.Imagem = new byte[imagem.ContentLength];
+               imagem.InputStream.Read(produto.Imagem, 0, imagem.ContentLength);
+            }
+
             _repositorio = new ProdutosRepositorio();
             _repositorio.Salvar(produto);
 
@@ -81,6 +88,19 @@ namespace Quiron.LojaVirtual.Web.Areas.Administrativo.Controllers
          }
 
          return Json(mensagem, JsonRequestBehavior.AllowGet);
+      }
+
+      public FileContentResult ObterImagem(int produtoId)
+      {
+         _repositorio = new ProdutosRepositorio();
+         Produto prod = _repositorio.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
+
+         if (prod != null)
+         {
+            return File(prod.Imagem, prod.ImagemMimeType);
+         }
+
+         return null;
       }
    }
 }

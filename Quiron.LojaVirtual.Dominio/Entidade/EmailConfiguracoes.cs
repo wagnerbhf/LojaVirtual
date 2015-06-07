@@ -27,7 +27,7 @@ namespace Quiron.LojaVirtual.Dominio.Entidade
       public EmailConfiguracoes()
       {
          UsarSsl = false;
-         ServidorSmtp = "smtp.quiron.com.br";
+         ServidorSmtp = "smtp.gmail.com";
          ServidorPorta = 587;
          Usuario = "quiron";
          EscreverArquivo = false;

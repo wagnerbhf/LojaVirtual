@@ -11,61 +11,46 @@ namespace Quiron.LojaVirtual.Web.Controllers
    {
       private ProdutosRepositorio _repositorio;
 
-      private Carrinho ObterCarrinho()
-      {
-         Carrinho carrinho = (Carrinho)Session["Carrinho"];
-
-         if (carrinho == null)
-         {
-            carrinho = new Carrinho();
-            Session["Carrinho"] = carrinho;
-         }
-
-         return carrinho;
-      }
-
-      public RedirectToRouteResult Adicionar(int produtoId, string returnUrl)
-      {
-         _repositorio = new ProdutosRepositorio();
-
-         Produto produto = _repositorio.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
-
-         if (produto != null)
-         {
-            ObterCarrinho().AdicionarItem(produto, 1);
-         }
-
-         return RedirectToAction("Index", new { returnUrl });
-      }
-
-      public RedirectToRouteResult Remover(int produtoId, string returnUrl)
-      {
-         _repositorio = new ProdutosRepositorio();
-
-         Produto produto = _repositorio.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
-
-         if (produto != null)
-         {
-            ObterCarrinho().RemoverItem(produto);
-         }
-
-         return RedirectToAction("Index", new { returnUrl });
-      }
-
-      public ViewResult Index(string returnUrl)
+      public ViewResult Index(Carrinho carrinho, string returnUrl)
       {
          return View(new CarrinhoViewModel
          {
-            Carrinho = ObterCarrinho(),
+            Carrinho = carrinho,
             ReturnUrl = returnUrl
          });
       }
 
-      public PartialViewResult Resumo()
+      public PartialViewResult Resumo(Carrinho carrinho)
       {
-         Carrinho carrinho = ObterCarrinho();
-
          return PartialView(carrinho);
+      }
+
+      public RedirectToRouteResult Adicionar(Carrinho carrinho, int produtoId, string returnUrl)
+      {
+         _repositorio = new ProdutosRepositorio();
+
+         Produto produto = _repositorio.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
+
+         if (produto != null)
+         {
+            carrinho.AdicionarItem(produto, 1);
+         }
+
+         return RedirectToAction("Index", new { returnUrl });
+      }
+
+      public RedirectToRouteResult Remover(Carrinho carrinho, int produtoId, string returnUrl)
+      {
+         _repositorio = new ProdutosRepositorio();
+
+         Produto produto = _repositorio.Produtos.FirstOrDefault(p => p.ProdutoId == produtoId);
+
+         if (produto != null)
+         {
+            carrinho.RemoverItem(produto);
+         }
+
+         return RedirectToAction("Index", new { returnUrl });
       }
 
       public ViewResult FecharPedido()
@@ -74,10 +59,8 @@ namespace Quiron.LojaVirtual.Web.Controllers
       }
 
       [HttpPost]
-      public ViewResult FecharPedido(Pedido pedido)
+      public ViewResult FecharPedido(Carrinho carrinho, Pedido pedido)
       {
-         Carrinho carrinho = ObterCarrinho();
-
          var emailConfiguracoes = new EmailConfiguracoes
          {
             EscreverArquivo = bool.Parse(ConfigurationManager.AppSettings["Email.EscreverArquivo"] ?? "false")
