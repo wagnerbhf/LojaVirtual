@@ -16,3 +16,11 @@ textarea {
     max-width: 280px;
 }
 
+.quantidade-textbox{
+   width: 30px;
+}
+
+a.deco-none {
+   color: #000000;
+   text-decoration: none;
+}

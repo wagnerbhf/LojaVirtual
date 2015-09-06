@@ -52,5 +52,10 @@ namespace Quiron.LojaVirtual.Dominio.Repositorio
 
          return prod;
       }
+
+      public Produto ObterProduto(int id)
+      {
+         return _context.Produtos.Single(p => p.ProdutoId == id);
+      }
    }
 }
